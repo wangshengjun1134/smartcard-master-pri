@@ -9557,8 +9557,7 @@ export function App({
     setMainView('knowledge');
   }, [showChat]);
   // Toggle the knowledge retrieval tool for this workspace. The daemon applies
-  // the change on the next tool registration rather than the current turn; the
-  // toast only confirms the persisted state.
+  // the change on the next tool registration rather than the current turn.
   const toggleKnowledge = useCallback(async () => {
     if (knowledgeTogglePendingRef.current) return;
     knowledgeTogglePendingRef.current = true;
@@ -9568,10 +9567,6 @@ export function App({
       await workspaceActions.setWorkspaceToolEnabled(
         KNOWLEDGE_RETRIEVAL_TOOL_NAME,
         next,
-      );
-      pushToast(
-        'info',
-        next ? t('knowledge.enabled') : t('knowledge.disabled'),
       );
     } catch {
       setKnowledgeActive((prev) => !prev);

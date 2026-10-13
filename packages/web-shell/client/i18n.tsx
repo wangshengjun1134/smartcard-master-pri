@@ -5678,7 +5678,7 @@ const ZH: Messages = {
   'history.retry': '重试',
   'editor.shellPlaceholder': '请输入终端命令',
   'editor.send': '发送消息',
-  'editor.referenceKnowledge': '引用知识',
+  'editor.referenceKnowledge': '检索远程知识库',
   'knowledge.enabled': '已启用知识库检索',
   'knowledge.disabled': '已关闭知识库检索',
   'knowledge.toggleFailed': '更新知识库检索工具失败。',
