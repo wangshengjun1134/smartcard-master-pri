@@ -59,7 +59,7 @@ describe('KnowledgeRetrievalTool', () => {
 
     const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(JSON.parse(init.body as string)).toEqual({
-      query: 'profile isolation',
+      queries: ['profile isolation'],
       scope: { series_id: ['SGP.27'] },
       retrieval: { top_k: 5, rerank_top_k: 5 },
     });
@@ -74,7 +74,7 @@ describe('KnowledgeRetrievalTool', () => {
 
     const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(JSON.parse(init.body as string)).toEqual({
-      query: 'x',
+      queries: ['x'],
       retrieval: { top_k: 5, rerank_top_k: 5 },
     });
   });

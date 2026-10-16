@@ -30,7 +30,7 @@ describe('searchKnowledge', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     await searchKnowledge('http://127.0.0.1:8000', {
-      query: 'profile isolation',
+      queries: ['profile isolation'],
     });
 
     expect(fetchMock).toHaveBeenCalledOnce();
@@ -39,7 +39,7 @@ describe('searchKnowledge', () => {
     expect(init.method).toBe('POST');
     expect(init.headers).toMatchObject({ 'Content-Type': 'application/json' });
     expect(JSON.parse(init.body as string)).toEqual({
-      query: 'profile isolation',
+      queries: ['profile isolation'],
     });
   });
 
@@ -47,7 +47,7 @@ describe('searchKnowledge', () => {
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ results: [] }));
     vi.stubGlobal('fetch', fetchMock);
 
-    await searchKnowledge('http://127.0.0.1:8000/', { query: 'x' });
+    await searchKnowledge('http://127.0.0.1:8000/', { queries: ['x'] });
 
     const [url] = fetchMock.mock.calls[0] as [string];
     expect(url).toBe('http://127.0.0.1:8000/api/v1/rag/search');
@@ -58,7 +58,7 @@ describe('searchKnowledge', () => {
       'fetch',
       vi.fn().mockResolvedValue(
         jsonResponse({
-          query: 'q',
+          queries: ['q'],
           total: 1,
           reranked: true,
           results: [
@@ -77,7 +77,7 @@ describe('searchKnowledge', () => {
     );
 
     const result = await searchKnowledge('http://127.0.0.1:8000', {
-      query: 'q',
+      queries: ['q'],
     });
 
     expect(result.total).toBe(1);
@@ -103,7 +103,7 @@ describe('searchKnowledge', () => {
     );
 
     await expect(
-      searchKnowledge('http://127.0.0.1:8000', { query: 'q' }),
+      searchKnowledge('http://127.0.0.1:8000', { queries: ['q'] }),
     ).rejects.toThrow(/HTTP 400/);
   });
 
@@ -114,7 +114,7 @@ describe('searchKnowledge', () => {
     );
 
     await expect(
-      searchKnowledge('http://127.0.0.1:8000', { query: 'q' }),
+      searchKnowledge('http://127.0.0.1:8000', { queries: ['q'] }),
     ).rejects.toThrow(KnowledgeRetrievalError);
   });
 
@@ -125,7 +125,7 @@ describe('searchKnowledge', () => {
     );
 
     await expect(
-      searchKnowledge('http://127.0.0.1:8000', { query: 'q' }),
+      searchKnowledge('http://127.0.0.1:8000', { queries: ['q'] }),
     ).rejects.toThrow(/results/);
   });
 
@@ -133,7 +133,7 @@ describe('searchKnowledge', () => {
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ results: [] }));
     vi.stubGlobal('fetch', fetchMock);
 
-    await searchKnowledge('http://127.0.0.1:8000', { query: 'q' });
+    await searchKnowledge('http://127.0.0.1:8000', { queries: ['q'] });
 
     const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(init.signal).toBeInstanceOf(AbortSignal);

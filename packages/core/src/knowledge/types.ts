@@ -53,7 +53,7 @@ export interface KnowledgeProjectionOptions {
 
 /** Request body for `POST /api/v1/rag/search`. */
 export interface KnowledgeSearchRequest {
-  query: string;
+  queries: string[];
   scope?: KnowledgeScope;
   retrieval?: KnowledgeRetrievalOptions;
   filters?: KnowledgeFilters;
@@ -95,7 +95,7 @@ export interface KnowledgeResultItem {
 }
 
 export interface KnowledgeSearchResponse {
-  query?: string;
+  queries?: string[];
   total?: number;
   reranked?: boolean;
   profile?: string;

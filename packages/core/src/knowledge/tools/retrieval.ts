@@ -114,7 +114,7 @@ class KnowledgeRetrievalInvocation extends BaseToolInvocation<
       const response = await searchKnowledge(
         this.retrievalUrl,
         {
-          query,
+          queries: [query],
           ...(series_id && series_id.length > 0
             ? { scope: { series_id } }
             : {}),
