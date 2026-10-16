@@ -1443,6 +1443,14 @@ const EN: Messages = {
   'knowledge.enabled': 'Knowledge retrieval enabled',
   'knowledge.disabled': 'Knowledge retrieval disabled',
   'knowledge.toggleFailed': 'Failed to update the knowledge retrieval tool.',
+  'settings.category.Knowledge': 'Knowledge',
+  'settings.label.knowledge.retrievalUrl': 'Knowledge Retrieval URL',
+  'settings.description.knowledge.retrievalUrl':
+    'URL for the knowledge base retrieval service. Leave empty to disable knowledge retrieval.',
+  'settings.label.knowledge.retrievalTimeoutSeconds':
+    'Knowledge Retrieval Timeout (seconds)',
+  'settings.description.knowledge.retrievalTimeoutSeconds':
+    'Time budget for one knowledge retrieval call, in seconds (default 60; values outside 1–3600 fall back to the default). Raise it when the retrieval service reranks slowly.',
   'editor.imagesSkipped': (v) =>
     `${v?.count ?? 0} file(s) were unavailable and skipped.`,
   'editor.imagesReadFailed': (v) =>
@@ -5682,6 +5690,13 @@ const ZH: Messages = {
   'knowledge.enabled': '已启用知识库检索',
   'knowledge.disabled': '已关闭知识库检索',
   'knowledge.toggleFailed': '更新知识库检索工具失败。',
+  'settings.category.Knowledge': '知识',
+  'settings.label.knowledge.retrievalUrl': '知识检索 URL',
+  'settings.description.knowledge.retrievalUrl':
+    '知识库检索服务的 URL。留空则禁用知识检索。',
+  'settings.label.knowledge.retrievalTimeoutSeconds': '知识检索超时（秒）',
+  'settings.description.knowledge.retrievalTimeoutSeconds':
+    '单次知识检索调用的时间预算，单位为秒（默认 60；不在 1–3600 范围内的值会回退到默认值）。当检索服务 rerank 较慢时可调高。',
   'editor.imagesSkipped': (v) => `已跳过 ${v?.count ?? 0} 个不可读取的文件。`,
   'editor.imagesReadFailed': (v) => `${v?.count ?? 0} 个文件读取失败。`,
   'editor.imagesTooLarge': (v) => `${v?.count ?? 0} 个文件超过附件大小限制。`,
