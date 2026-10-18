@@ -312,8 +312,8 @@ describe('built-in brand document contract', () => {
     const href = /rel="icon"[^>]*href="([^"]+)"/s.exec(html)?.[1];
 
     expect(href?.startsWith('data:image/svg+xml,')).toBe(true);
-    // The Qwen mark's purple, percent-encoded.
-    expect(href).toContain('%236D44E8');
+    // The SmartCard mark's blue, percent-encoded.
+    expect(href).toContain('%231a2bff');
   });
 
   // The brand script swaps the icon link's href, so it must run after that
