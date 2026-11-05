@@ -24,6 +24,7 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from 'react';
 import styles from './SmartCardConsole.module.css';
+import { globalEventBus } from '../../utils/eventBus';
 import {
   connectReader,
   disconnectReader,
@@ -564,8 +565,10 @@ export function SmartCardConsole({
 
   const handleParseApdu = useCallback(() => {
     if (contextMenu.content) {
-      setInputValue(`/parse ${contextMenu.content}`);
-      textareaRef.current?.focus();
+      // Send to main chat editor via global event bus
+      globalEventBus.emit('editor:insert', {
+        text: `/parse ${contextMenu.content}`,
+      });
     }
     setContextMenu({ type: 'none', x: 0, y: 0, content: '' });
   }, [contextMenu.content]);

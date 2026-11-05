@@ -275,6 +275,7 @@ import {
   parseSplitSessionIds,
   saveSplitSessions,
 } from './utils/splitUrl';
+import { globalEventBus } from './utils/eventBus';
 import { ScheduledTasksDialog } from './components/dialogs/ScheduledTasksDialog';
 import { GoalsDialog } from './components/dialogs/GoalsDialog';
 import { WorkflowRunsPage } from './components/workflows/WorkflowRunsPage';
@@ -8041,6 +8042,16 @@ export function App({
   const statusBarRef = useRef<StatusBarHandle>(null);
   const messageListRef = useRef<MessageListHandle | null>(null);
   const editorRef = useRef<EditorHandle | null>(null);
+
+  // Listen for global event bus to insert text into main editor
+  useEffect(() => {
+    const unsubscribe = globalEventBus.on('editor:insert', (payload) => {
+      editorRef.current?.insertText(payload.text);
+      editorRef.current?.focus();
+    });
+    return unsubscribe;
+  }, []);
+
   const restoreConversationSearchFocus = useCallback(() => {
     editorRef.current?.focus();
   }, []);
