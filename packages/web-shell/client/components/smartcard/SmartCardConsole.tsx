@@ -9,6 +9,8 @@ import {
   Usb,
   Unplug,
   Plug,
+  Copy,
+  Sparkles,
 } from 'lucide-react';
 import {
   useState,
@@ -19,6 +21,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type FormEvent,
   type ChangeEvent,
+  type MouseEvent as ReactMouseEvent,
 } from 'react';
 import styles from './SmartCardConsole.module.css';
 import {
@@ -74,6 +77,14 @@ export interface SmartCardConsoleProps {
 }
 
 type MenuType = 'none' | 'slash' | 'at';
+type ContextMenuType = 'none' | 'apdu';
+
+interface ContextMenuState {
+  type: ContextMenuType;
+  x: number;
+  y: number;
+  content: string;
+}
 
 function WidthModeIcon({ mode }: { mode: 'narrow' | 'wide' }) {
   if (mode === 'wide') {
@@ -153,6 +164,14 @@ export function SmartCardConsole({
   const [menuIndex, setMenuIndex] = useState(0);
   const [showAddMenu, setShowAddMenu] = useState(false);
   const [showReaderMenu, setShowReaderMenu] = useState(false);
+
+  // Context menu state for APDU rows
+  const [contextMenu, setContextMenu] = useState<ContextMenuState>({
+    type: 'none',
+    x: 0,
+    y: 0,
+    content: '',
+  });
 
   // Smart-card reader state
   const [readers, setReaders] = useState<ReaderInfo[]>([]);
@@ -522,6 +541,35 @@ export function SmartCardConsole({
     textareaRef.current?.focus();
   };
 
+  // Context menu handlers for APDU rows
+  const handleApduContextMenu = useCallback(
+    (event: ReactMouseEvent<HTMLDivElement>, content: string) => {
+      event.preventDefault();
+      setContextMenu({
+        type: 'apdu',
+        x: event.clientX,
+        y: event.clientY,
+        content,
+      });
+    },
+    [],
+  );
+
+  const handleCopyApdu = useCallback(async () => {
+    if (contextMenu.content) {
+      await navigator.clipboard.writeText(contextMenu.content);
+    }
+    setContextMenu({ type: 'none', x: 0, y: 0, content: '' });
+  }, [contextMenu.content]);
+
+  const handleParseApdu = useCallback(() => {
+    if (contextMenu.content) {
+      setInputValue(`/parse ${contextMenu.content}`);
+      textareaRef.current?.focus();
+    }
+    setContextMenu({ type: 'none', x: 0, y: 0, content: '' });
+  }, [contextMenu.content]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -540,11 +588,16 @@ export function SmartCardConsole({
       if (readerMenuRef.current && !readerMenuRef.current.contains(target)) {
         setShowReaderMenu(false);
       }
+
+      // Close context menu when clicking outside
+      if (contextMenu.type !== 'none') {
+        setContextMenu({ type: 'none', x: 0, y: 0, content: '' });
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [contextMenu.type]);
 
   return (
     <div
@@ -593,9 +646,15 @@ export function SmartCardConsole({
                 className={[
                   styles.consoleLine,
                   isApdu ? styles.consoleApdu : styles.consoleMuted,
+                  isApdu ? styles.apduRow : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
+                onContextMenu={(e) => {
+                  if (isApdu) {
+                    handleApduContextMenu(e, content);
+                  }
+                }}
               >
                 <span className={styles.timestamp}>{line.timestamp}</span>
                 {prefix && <span className={styles.apduPrefix}>{prefix}</span>}
@@ -605,6 +664,26 @@ export function SmartCardConsole({
           })}
           <div ref={consoleEndRef} />
         </div>
+
+        {/* Context Menu for APDU rows */}
+        {contextMenu.type === 'apdu' && (
+          <div
+            className={styles.contextMenu}
+            style={{ left: contextMenu.x, top: contextMenu.y }}
+          >
+            <button className={styles.contextMenuItem} onClick={handleCopyApdu}>
+              <Copy className={styles.contextMenuIcon} />
+              <span>复制</span>
+            </button>
+            <button
+              className={styles.contextMenuItem}
+              onClick={handleParseApdu}
+            >
+              <Sparkles className={styles.contextMenuIcon} />
+              <span>AI 解析</span>
+            </button>
+          </div>
+        )}
 
         {/* Composer - with border */}
         <div className={styles.composer} ref={composerRef}>
