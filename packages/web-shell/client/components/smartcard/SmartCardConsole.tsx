@@ -730,7 +730,12 @@ export function SmartCardConsole({
               <div className={styles.readerMenuWrapper} ref={readerMenuRef}>
                 <button
                   className={styles.readerButton}
-                  onClick={() => setShowReaderMenu(!showReaderMenu)}
+                  onClick={() => {
+                    if (!showReaderMenu) {
+                      void refreshReaders();
+                    }
+                    setShowReaderMenu(!showReaderMenu);
+                  }}
                   title="Select reader"
                 >
                   <Usb className={styles.readerIcon} />
