@@ -670,6 +670,7 @@ export function SmartCardConsole({
           <div
             className={styles.contextMenu}
             style={{ left: contextMenu.x, top: contextMenu.y }}
+            onMouseDown={(e) => e.stopPropagation()}
           >
             <button className={styles.contextMenuItem} onClick={handleCopyApdu}>
               <Copy className={styles.contextMenuIcon} />

@@ -134,13 +134,16 @@
   margin: -2px -4px;
   transition:
     background-color 0.15s ease,
-    box-shadow 0.15s ease;
+    box-shadow 0.15s ease,
+    font-weight 0.15s ease;
   cursor: context-menu;
+  font-weight: 500;
 }
 
 .apduRow:hover {
   background-color: var(--muted);
   box-shadow: inset 0 0 0 1px var(--border);
+  font-weight: 400;
 }
 
 .consoleApdu {
