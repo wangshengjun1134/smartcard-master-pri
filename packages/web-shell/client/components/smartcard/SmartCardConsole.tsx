@@ -581,8 +581,12 @@ export function SmartCardConsole({
         {/* Console Area - with border */}
         <div className={styles.consoleArea}>
           {consoleLines.map((line, index) => {
-            const isApdu =
-              line.message.startsWith('> ') || line.message.startsWith('< ');
+            const isApduRequest = line.message.startsWith('> ');
+            const isApduResponse = line.message.startsWith('< ');
+            const isApdu = isApduRequest || isApduResponse;
+            // 提取 APDU 符号和内容
+            const prefix = isApduRequest ? '>' : isApduResponse ? '<' : '';
+            const content = isApdu ? line.message.slice(2) : line.message;
             return (
               <div
                 key={index}
@@ -594,7 +598,8 @@ export function SmartCardConsole({
                   .join(' ')}
               >
                 <span className={styles.timestamp}>{line.timestamp}</span>
-                <span className={styles.message}>{line.message}</span>
+                {prefix && <span className={styles.apduPrefix}>{prefix}</span>}
+                <span className={styles.message}>{content}</span>
               </div>
             );
           })}

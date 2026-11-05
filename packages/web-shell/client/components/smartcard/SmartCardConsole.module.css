@@ -141,6 +141,12 @@
   flex-shrink: 0;
 }
 
+.apduPrefix {
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
 .message {
   color: inherit;
   word-break: break-word;
@@ -295,7 +301,9 @@
   background: transparent;
   color: var(--muted-foreground);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .addButton:hover {
@@ -417,7 +425,9 @@
   background: transparent;
   color: var(--muted-foreground);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .connectButton:hover:not(:disabled) {
@@ -506,7 +516,11 @@
 
 .statusConnected {
   color: var(--success-color, #22c55e);
-  background: color-mix(in srgb, var(--success-color, #22c55e) 15%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--success-color, #22c55e) 15%,
+    transparent
+  );
 }
 
 .statusDisconnected {
@@ -526,7 +540,9 @@
   background: var(--primary);
   color: var(--primary-foreground);
   cursor: pointer;
-  transition: opacity 0.2s, background 0.2s;
+  transition:
+    opacity 0.2s,
+    background 0.2s;
 }
 
 .sendButton:hover:not(:disabled) {
