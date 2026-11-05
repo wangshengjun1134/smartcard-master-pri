@@ -597,7 +597,7 @@ export const KnowledgePage = memo(function KnowledgePage() {
       const width = container.clientWidth || 900;
       const height = container.clientHeight || 650;
       sizeRef.current = { width, height };
-      centerRef.current = { cx: width / 2, cy: height / 2 + 8 };
+      centerRef.current = { cx: width / 2, cy: height / 2 };
       svg.attr('viewBox', `0 0 ${width} ${height}`);
     };
     applySize();
